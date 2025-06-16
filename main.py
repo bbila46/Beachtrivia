@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import os
-from trivia import BeachTrivia
+from trivia import Beachtrivia 
 from leaderboard import Leaderboard
 from dotenv import load_dotenv
 from flask import Flask
@@ -17,7 +17,7 @@ intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # Add trivia and leaderboard
-bot.add_cog(BeachTrivia(bot))
+bot.add_cog(Beachtrivia(bot))
 bot.add_cog(Leaderboard(bot))
 
 # Optional Flask web server (Render often checks this)
@@ -25,7 +25,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "🌴 BeachTrivia Bot is running!"
+    return "🌴 Beachtrivia Bot is running!"
 
 if __name__ == "__main__":
     # Run Discord bot
