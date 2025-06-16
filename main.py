@@ -17,7 +17,7 @@ intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # Add trivia and leaderboard
-bot.add_cog(Beachtrivia(bot))
+bot.add_cog(Trivia(bot))
 bot.add_cog(Leaderboard(bot))
 
 # Optional Flask web server (Render often checks this)
