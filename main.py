@@ -14,7 +14,7 @@ intents.messages = True
 intents.guilds = True
 intents.members = True
 
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix="/", intents=intents)
 
 # Add trivia and leaderboard
 bot.add_cog(Trivia(bot))
