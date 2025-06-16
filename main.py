@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import os
-from trivia import Beachtrivia 
+from trivia import Trivia 
 from leaderboard import Leaderboard
 from dotenv import load_dotenv
 from flask import Flask
