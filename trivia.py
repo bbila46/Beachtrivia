@@ -72,7 +72,6 @@ QUESTIONS = [
     ("How can you avoid 'beach diarrhea'?", "D"),
     ("What is the most important first-aid tool to bring to the beach?", "C")
 ]
-]
 
 def load_xp():
     if os.path.exists(XP_FILE):
