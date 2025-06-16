@@ -2,108 +2,6 @@ import discord
 from discord.ext import commands
 import json
 import datetime
-import requests
-import os
-from flask import Flask
-import threading
-
-# === DISCORD BOT SETUP ===
-intents = discord.Intents.default()
-intents.message_content = True
-bot = commands.Bot(command_prefix='/', intents=intents)
-
-# === FLASK APP FOR NETWORK KEEP-ALIVE ===
-app = Flask(__name__)
-
-@app.route("/")
-def home():
-    return "🌊 BeachTrivia Bot is running!", 200
-
-def run_flask():
-    app.run(host="0.0.0.0", port=8080)
-
-threading.Thread(target=run_flask).start()
-
-# === ENV VARIABLES (insert via Render Dashboard or .env locally) ===
-WEBHOOK_URL = os.getenv("WEBHOOK_URL")
-DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
-
-# === XP ROLES ===
-XP_ROLES = [
-    (0, "🏖️ Beach First-Aid Trainee"),
-    (75, "🩹 Sandy Bandage Applier"),
-    (150, "☀️ Sunburn Relief Specialist"),
-    (225, "🪼 Jellyfish Sting Soother"),
-    (300, "🌊 Tidal Wound Healer"),
-    (375, "🐚 Seashell Scrapes Medic"),
-    (450, "🚤 Ocean Lifesaver"),
-    (525, "🪸 Coral Cut Caretaker"),
-    (600, "🏥 Beach ER Doctor"),
-    (675, "🩺 Chief of Coastal Medicine"),
-    (750, "🌟🏄 Legendary Surf Medic")
-]
-
-user_data = {}
-
-# === LOAD QUESTIONS ===
-with open("questions.json", "r") as f:
-    questions = json.load(f)
-
-def get_today_question():
-    index = datetime.datetime.utcnow().timetuple().tm_yday % len(questions)
-    return questions[index]
-
-def send_webhook_message(title, description, color=3447003):
-    if not WEBHOOK_URL:
-        return
-    payload = {
-        "username": "🌊 BeachTrivia Bot",
-        "embeds": [{
-            "title": title,
-            "description": description,
-            "color": color
-        }]
-    }
-    try:
-        requests.post(WEBHOOK_URL, json=payload)
-    except:
-        pass
-
-def get_user_role(xp):
-    role = XP_ROLES[0][1]
-    for level, r in XP_ROLES:
-        if xp >= level:
-            role = r
-    return role
-
-# === BOT EVENTS ===
-
-@bot.event
-async def on_ready():
-    print(f"✅ Bot is ready as {bot.user}")
-    send_webhook_message("BeachTrivia Bot", "Bot is online and ready 🏝️")
-
-# === BOT COMMANDS ===
-
-@bot.command(name="beachtrivia")
-async def beachtrivia(ctx):
-    question = get_today_question()
-    embed = discord.Embed(
-        title="🌊 BeachTrivia: Daily Quiz",
-        description=f"**{question['question']}**\n" +
-                    "\n".join
-
-Here's a **clean, final version** of your `BeachTrivia` Discord bot in `main.py`, completely **without `audioop`**, **without webhooks**, and suitable for deployment on **GitHub** or **Render**.
-
----
-
-## ✅ `main.py`
-
-```python
-import discord
-from discord.ext import commands
-import json
-import datetime
 import threading
 from flask import Flask
 
@@ -112,7 +10,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='/', intents=intents)
 
-# === FLASK KEEP-ALIVE FOR RENDER ===
+# === FLASK KEEP-ALIVE FOR RENDER OR SIMILAR ===
 app = Flask(__name__)
 
 @app.route('/')
@@ -139,8 +37,8 @@ XP_ROLES = [
     (750, "🌟🏄 Legendary Surf Medic")
 ]
 
-# === LOAD USER DATA & QUESTIONS ===
 user_data = {}
+
 with open("questions.json", "r") as f:
     questions = json.load(f)
 
@@ -154,8 +52,6 @@ def get_user_role(xp):
         if xp >= level:
             role = r
     return role
-
-# === BOT EVENTS ===
 
 @bot.event
 async def on_ready():
@@ -229,5 +125,4 @@ async def leaderboard(ctx):
     )
     await ctx.send(embed=embed)
 
-# === START BOT ===
 bot.run("YOUR_DISCORD_BOT_TOKEN")
